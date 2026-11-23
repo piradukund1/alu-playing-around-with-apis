@@ -336,7 +336,16 @@ dialog h2 {
     font-size: 14px;
 }
 
+@media (max-width: 600px) {
+    .nav-links {
+        gap: 14px;
+        font-size: 14px;
+    }
 
+    .tabs {
+        width: 100%;
+    }
+}
 
 
 
