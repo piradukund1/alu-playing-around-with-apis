@@ -1,0 +1,38 @@
+
+
+:root {
+  --bg: #0c0d0c;
+  --card: #141513;
+  --text: #f6f7f2;
+  --accent: #b5ef8a;
+  --muted: rgba(246, 247, 242, 0.55);
+  --border: rgba(246, 247, 242, 0.15);
+}
+
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter Tight", system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+a {
+    color: inherit;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
