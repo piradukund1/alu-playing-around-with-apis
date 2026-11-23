@@ -47,7 +47,8 @@ a {
     color: var(--muted);
 }
 
-h1 , h2 {
+h1 , 
+h2 {
     font-family: Archivo, sans-serif;
     text-transform: uppercase;
     line-height: 1.05;
