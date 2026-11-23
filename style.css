@@ -138,3 +138,76 @@ select:focus {
     list-style: none;
     padding: 0;
 }
+
+.nav-links a{
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+.hero {
+    padding: 60px 0 36px;
+}
+
+h1 {
+    font-size: clamp(36px, 7vw, 72px);
+    margin: 14px 0;
+}
+
+.search {
+    display: flex;
+    gap: 10px;
+    margin-top: 26px;
+    flex-wrap: wrap;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 0;
+    margin-bottom: 18px;
+    border-block: 1px solid var(--border);
+    scroll-margin-top: 80px;
+}
+
+.tabs {
+    display: flex;
+    gap: 6px;
+    margin-right: auto;
+
+}
+
+.tab {
+    border-radius: 99px;
+    padding: 8px, 16px;
+    cursor: pointer;
+    font: 500 14px "Inter Tight", sans-serif;
+
+}
+
+.tab.active {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.message {
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin: 10px 0;
+}
+.about {
+    padding: 50px 0;
+    border-top: 1px solid var(--border);
+    scroll-margin-top: 80px;
+}
+
+
+
+
