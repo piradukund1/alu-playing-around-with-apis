@@ -34,8 +34,25 @@
 
             <section class="toolbar" id="results">
                 <div class="tabs">
-                    
+                    <button class="tab active" data-tab="all">All</button>
+                    <button class="tab" data-tab="remote">Remote</button>
+                    <button class="tab" data-tab="saved">Saved</button>
                 </div>
+                <select id="type">
+                    <option value="">All job types</option>
+                    <option value="full-time">Full-time</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
+                    <option value="freelance">Freelance</option>
+                </select>
+                <select id="sort">
+                    <option value="newest">Newest first</option>
+                    <option value="oldest">Oldest first</option>
+                    <option value="company">Company A-Z</option>
+                </select>
+                <button id="clear" class="btn btn-outline">Clear</button>
+                <button id="refresh" class="btn btn-outline">↻ Refresh</button>
             </section>
         </main>
     </body>
