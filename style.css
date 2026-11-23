@@ -36,3 +36,32 @@ a {
     color: var(--muted);
 }
 
+.accent {
+    color: var(--accent);
+}
+
+.label {
+    font: 12px monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+}
+
+h1 , h2 {
+    font-family: Archivo, sans-serif;
+    text-transform: uppercase;
+    line-height: 1.05;
+}
+
+
+.btn {
+
+    background: var(--accent);
+    color: var(--bg);
+    border: 1px solid var(--accent);
+    border-radius: 99px;
+    padding: 10px 18px;
+    font: 600 14px "Inter Tight", sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+}
