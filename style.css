@@ -207,6 +207,135 @@ h1 {
     border-top: 1px solid var(--border);
     scroll-margin-top: 80px;
 }
+.about p {
+    max-width: 700px;
+    margin-top: 12px;
+}
+.job-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+    margin: 14px 0 50px;
+}
+
+.job-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.job-card:hover {
+    border-color: var(--accent)
+}
+
+.job-card h3{
+    font-size: 17px;
+}
+
+.job-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.save {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.save.saved {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.tags {
+    display: flex;
+    gap: 6px;
+}
+
+.tap {
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.tag.source {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.job-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 8px;
+
+}
+
+
+dialog {
+    margin: auto;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 680px;
+    width: 92%;
+
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+
+}
+
+dialog h2 {
+    font-size: 26px;
+    margin: 8px 0;
+}
+
+.description {
+    max-height: 320px;
+    overflow-y: auto;
+    margin: 18px 0;
+    color: rgba(246, 247, 242, 0.8);
+
+}
+
+.close {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 22px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 14px;
+}
+
 
 
 
