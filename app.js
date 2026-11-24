@@ -115,5 +115,27 @@ function openDetails(id) {
 }
 
 function setTab(name){
-    
+    tab = name;
+    document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+    show();
 }
+
+//buttons and inputs
+["keyword", "place", "type", "sort"].forEach(id => el(id).addEventListener("input", show));
+el("searchForm").addEventListener("submit", e => { e.preventDefault(); show(); });
+document.querySelectorAll("[data-tab]").forEach(b => b.addEventListener("click", () => setTab(b.dataset.tab)));
+el("clear").addEventListener("click", () => { ["keyword", "place", "type"].forEach(id => (el(id).value = "")); el("sort").value = "newest"; setTab("all"); });
+el("refresh").addEventListener("click", () => loadJobs(true));
+el("jobs").addEventListener("click", e => {
+    const s = e.target.closest("[data-save]"), d = e.target.closest("[data-details]");
+    if (s) toggleSave(s.dataset.save);
+    if (d) openDetails(d.dataset.details);
+});
+el("dialogSave").addEventListener("click", () => toggleSave(openJob.id));
+el("closeDialog").addEventListener("click", () => el("dialog").close());
+
+//footer to server web01 or web02 - proves looad balancer works
+
+fetch("/server-info").then(r => r.json()).then(d => (el("server").textContent = "Served by " + d.server)).catch(() => {});
+
+loadJobs(false);
