@@ -42,9 +42,55 @@ async function getJobs(api) {
     throw new Error(api.name + "failed"); 
 }
 
+
 async function loadJobs(refresh) {
     el("message").hidden = true;
     const cache = load("cache");
     if (!refresh && cache && Date.now() - cache.time < 30 * 60000 ) { jobs = cache.jobs; return show(); }
 
+    el("count").textContent = "Loading jobs...";
+    const results = await Promise.allSettled(APIS.map(getJobs)); // one failing Api does not stop the others
+    const failed = APIS.filter((_, i) => results[i].status === "rejected").map(a => a.name);
+    jobs = results.flatMap(r => r.value || []).filter(j => j.title && /^https?:\/\//.test(j.url)); // only safe links
+
+    if (!jobs.length) {
+        el("count").textContent = "No jobs loaded";
+        el("jobs").innerHTML = "";
+        return message("Couldn't reach the job providers. Check your internet and press Refresh.");
+    }
+    if (failed.length) message(failed.join(" and ") + "is not responding, so some jobs may be missing.");
+    store("cache", { time: Date.now(), jobs });
+    show();
 }
+
+function message(text) { el("message").textContent = text; el("message").hidden = false; }
+
+// Search + filters + sorting, then draw the job cards
+function show() {
+    const word = el("keyword").value.trim().toLowerCase(), place = el("place").value.trim().toLowerCase();
+    const type = el("type").value, sort = el("sort").value;
+    const list = (tab === "saved" ? saved : jobs).filter(j =>
+    (j.title + "" + j.company + "" + j.description).toLowerCase().includes(word) &&
+    simpleType(j.type).includes(type) &&
+    (tab !== "remote" || j.remote)
+    ).sort((a, b) => sort === "company" ? a.company.localeCompare(b.company) : sort ==="oldest" ? a.date - b.date : b.date - a.date);
+
+    el("savedCount").textContent = saved.length;
+    el("count").textContent = list.length + (list.length === 1 ? "job found" : "jobs found");
+    el("jobs").innerHTML = list.length ? list.map(j => `
+        <article class="job-card">
+            <div class="job-top">
+            <div><h3>${safe(j.title)}</h3><p class="muted">${safe(j.company)}</p></div>
+            <button class="save ${isSaved(j.id) ? "saved" : ""}" data-save="${safe(j.id)}" title="Save">★</button>
+            </div>
+            <p class="muted">📍 ${safe(j.location)} · ${safe(j.type)} · ${j.date ? new Date(j.date).toLocaleDateString() : "No date"}</p>
+            <div class="tags">${j.remote ? '<span class="tag">Remote</span>' : ""}<span class="tag source">${j.source}</span></div>
+            <div class="job-actions">
+                <button class="btn btn-outline" data-details="${safe(j.id)}">Details</button>
+                <a class="btn" href="${safe(j.url)}" target="_blank" rel="noopener">Apply ↗</a>
+            </div>
+            </article>`).join("") : '<p class="muted">No jobs match. Try other words or press Clear.</p>';
+}
+
+
+//saved jobs -- the whole jobs are stored in the browser , so it stays even if it leaves the api
