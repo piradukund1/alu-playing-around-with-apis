@@ -3,13 +3,13 @@
 
 
 const APIS = [
-    { name : "Arbeitnow", list: "data", proxy: "/api/arbeitnow/", direct: "https://www.arbeitnow.com/api/job-board-api" },
+    { name: "Arbeitnow", list: "data", proxy: "/api/arbeitnow/", direct: "https://www.arbeitnow.com/api/job-board-api" },
     { name: "Remotive", list: "jobs", proxy: "/api/remotive/?limit=100", direct: "https://remotive.com/api/remote-jobs?limit=100" }
 ];
 
 const el = id => document.getElementById(id);
 const load = key => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
-const store = (key, value) => { try {localStorage.setItem(key, JSON.stringify(value));} catch {} };
+const store = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch { } };
 const simpleType = t => String(t).toLowerCase().replace(/[\s_]+/g, "-");
 const niceType = t => simpleType(t).replace(/^./, c => c.toUpperCase());
 const safe = t => String(t ?? "").replace(/[&<>"']/g, c => "&#" + c.charCodeAt(0) + ";");
@@ -25,7 +25,7 @@ function cleanJob(j, source) {
         location: (arbeitnow ? j.location : j.candidate_required_location) || "Remote",
         type: (arbeitnow ? (j.job_types || []).map(niceType).join(", ") : niceType(j.job_type || "")) || "Not specified",
         remote: arbeitnow ? j.remote === true : true,
-        date: arbeitnow ? j.created_at * 1000 || 0 : new Date(j.publication_date).getTime() || 0 
+        date: arbeitnow ? j.created_at * 1000 || 0 : new Date(j.publication_date).getTime() || 0
     };
 }
 
@@ -34,19 +34,25 @@ async function getJobs(api) {
     const urls = location.protocol.startsWith("http") ? [api.proxy, api.direct] : [api.direct];
     for (const url of urls) {
         try {
-            const res = await fetch(url, { signal: AbortSignal.timeout(15000)});
-            const list = (await res.json())[api.list];
-            if (res.ok && Array.isArray(list)) return list.map(j => cleanJob(j, api.name));
-        } catch {}
+            const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+            if (!res.ok) continue;
+            const data = await res.json();
+            const list = data[api.list];
+
+            if (Array.isArray(list)) {
+                return list.map(j => cleanJob(j, api.name));
+            }
+
+        } catch { }
     }
-    throw new Error(api.name + "failed"); 
+    throw new Error(api.name + " failed");
 }
 
 
 async function loadJobs(refresh) {
     el("message").hidden = true;
     const cache = load("cache");
-    if (!refresh && cache && Date.now() - cache.time < 30 * 60000 ) { jobs = cache.jobs; return show(); }
+    if (!refresh && cache && Date.now() - cache.time < 30 * 60000) { jobs = cache.jobs; return show(); }
 
     el("count").textContent = "Loading jobs...";
     const results = await Promise.allSettled(APIS.map(getJobs)); // one failing Api does not stop the others
@@ -58,7 +64,7 @@ async function loadJobs(refresh) {
         el("jobs").innerHTML = "";
         return message("Couldn't reach the job providers. Check your internet and press Refresh.");
     }
-    if (failed.length) message(failed.join(" and ") + "is not responding, so some jobs may be missing.");
+    if (failed.length) message(failed.join(" and ") + " is not responding, so some jobs may be missing.");
     store("cache", { time: Date.now(), jobs });
     show();
 }
@@ -70,10 +76,14 @@ function show() {
     const word = el("keyword").value.trim().toLowerCase(), place = el("place").value.trim().toLowerCase();
     const type = el("type").value, sort = el("sort").value;
     const list = (tab === "saved" ? saved : jobs).filter(j =>
-    (j.title + "" + j.company + "" + j.description).toLowerCase().includes(word) &&
-    simpleType(j.type).includes(type) &&
-    (tab !== "remote" || j.remote)
-    ).sort((a, b) => sort === "company" ? a.company.localeCompare(b.company) : sort ==="oldest" ? a.date - b.date : b.date - a.date);
+        (j.title + " " + j.company + " " + j.description).toLowerCase().includes(word) &&
+        (!place ||
+            String(j.location || "").toLowerCase().includes(place) ||
+            (place === "remote" && j.remote)
+        ) &&
+        simpleType(j.type).includes(type) &&
+        (tab !== "remote" || j.remote)
+    ).sort((a, b) => sort === "company" ? a.company.localeCompare(b.company) : sort === "oldest" ? a.date - b.date : b.date - a.date);
 
     el("savedCount").textContent = saved.length;
     el("count").textContent = list.length + (list.length === 1 ? "job found" : "jobs found");
@@ -114,7 +124,7 @@ function openDetails(id) {
     el("dialog").showModal();
 }
 
-function setTab(name){
+function setTab(name) {
     tab = name;
     document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
     show();
@@ -136,6 +146,6 @@ el("closeDialog").addEventListener("click", () => el("dialog").close());
 
 //footer to server web01 or web02 - proves looad balancer works
 
-fetch("/server-info").then(r => r.json()).then(d => (el("server").textContent = "Served by " + d.server)).catch(() => {});
+fetch("/server-info").then(r => r.json()).then(d => (el("server").textContent = "Served by " + d.server)).catch(() => { });
 
 loadJobs(false);

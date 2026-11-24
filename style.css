@@ -185,7 +185,7 @@ h1 {
 
 .tab {
     border-radius: 99px;
-    padding: 8px, 16px;
+    padding: 8px 16px;
     cursor: pointer;
     font: 500 14px "Inter Tight", sans-serif;
 
@@ -264,7 +264,7 @@ h1 {
     gap: 6px;
 }
 
-.tap {
+.tag {
     border: 1px solid var(--border);
     border-radius: 99px;
     padding: 3px 10px;
