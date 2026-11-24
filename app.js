@@ -94,3 +94,26 @@ function show() {
 
 
 //saved jobs -- the whole jobs are stored in the browser , so it stays even if it leaves the api
+const isSaved = id => saved.some(j => j.id === id);
+function toggleSave(id) {
+    saved = isSaved(id) ? saved.filter(j => j.id !== id) : [...saved, jobs.find(j => j.id === id)].filter(Boolean);
+    store("saved", saved);
+    show();
+    if (openJob) el("dialogSave").textContent = isSaved(openJob.id) ? "★ Saved" : "☆ Save job";
+}
+
+//details popup (description shown as plain text only, for safety)
+function openDetails(id) {
+    openJob = [...jobs, ...saved].find(j => j.id === id);
+    el("dialogSource").textContent = "From " + openJob.source;
+    el("dialogTitle").textContent = openJob.title;
+    el("dialogInfo").textContent = `${openJob.company} · ${openJob.location} · ${openJob.type}`;
+    el("dialogText").textContent = new DOMParser().parseFromString(openJob.description, "text/html").body.textContent.trim() || "see the original listing.";
+    el("dialogApply").textContent = openJob.url;
+    el("dialogSave").textContent = isSaved(id) ? "★ Saved" : "☆ Save job";
+    el("dialog").showModal();
+}
+
+function setTab(name){
+    
+}
