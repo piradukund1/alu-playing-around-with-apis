@@ -1,0 +1,17 @@
+# Runs the whole setup on one computer: Web01 + Web02 + load balancer.
+# Start:  docker compose up -d --build     then open http://localhost:8080
+# Stop:   docker compose down
+services:
+  web01:
+    build: .
+    environment: [SERVER_NAME=Web01]
+  web02:
+    build: .
+    environment: [SERVER_NAME=Web02]
+  lb01:
+    image: nginx:alpine
+    ports: ["8080:80"]
+    volumes: ["./nginx/lb.conf:/lb.conf:ro"]
+    command: sh -c "sed 's/WEB01_IP/web01/; s/WEB02_IP/web02/' /lb.conf > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+    depends_on: [web01, web02]
+
