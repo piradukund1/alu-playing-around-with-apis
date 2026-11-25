@@ -9,7 +9,7 @@ Built with plain **HTML, CSS and JavaScript** (no jQuery, no frameworks), hosted
 | 🌐 **Live site (through the load balancer, Lb01)** | http://35.178.210.107 |
 | 🖥️ **Web01 directly** | http://18.132.197.16 |
 | 🖥️ **Web02 directly** | http://18.175.221.146 |
-| 🎬 **Demo video** |                             |
+| 🎬 **Demo video** | [Watch the demo on YouTube](https://www.youtube.com/watch?v=rmXe_iuxU1I) |
 | 💻 **Repository** | https://github.com/piradukund1/alu-playing-around-with-apis |
 
 Server check links (each answers with the server's name):
