@@ -15,7 +15,6 @@ Built with plain **HTML, CSS and JavaScript** (no jQuery, no frameworks), hosted
 Server check links (each answers with the server's name):
 [Lb01 → /server-info](http://35.178.210.107/server-info) · [Web01 → /server-info](http://18.132.197.16/server-info) · [Web02 → /server-info](http://18.175.221.146/server-info)
 
-> **API keys / login credentials:** none are needed. Both APIs are free and public, and the site has no user accounts. Open the live link and every feature works.
 
 ---
 
