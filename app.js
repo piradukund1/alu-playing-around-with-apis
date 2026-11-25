@@ -86,7 +86,7 @@ function show() {
     ).sort((a, b) => sort === "company" ? a.company.localeCompare(b.company) : sort === "oldest" ? a.date - b.date : b.date - a.date);
 
     el("savedCount").textContent = saved.length;
-    el("count").textContent = list.length + (list.length === 1 ? "job found" : "jobs found");
+    el("count").textContent = list.length + (list.length === 1 ? "job found" : " jobs found");
     el("jobs").innerHTML = list.length ? list.map(j => `
         <article class="job-card">
             <div class="job-top">
@@ -119,7 +119,7 @@ function openDetails(id) {
     el("dialogTitle").textContent = openJob.title;
     el("dialogInfo").textContent = `${openJob.company} · ${openJob.location} · ${openJob.type}`;
     el("dialogText").textContent = new DOMParser().parseFromString(openJob.description, "text/html").body.textContent.trim() || "see the original listing.";
-    el("dialogApply").textContent = openJob.url;
+    el("dialogApply").href = openJob.url;
     el("dialogSave").textContent = isSaved(id) ? "★ Saved" : "☆ Save job";
     el("dialog").showModal();
 }

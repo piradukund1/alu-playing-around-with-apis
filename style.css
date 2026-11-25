@@ -1,5 +1,4 @@
 
-
 :root {
   --bg: #0c0d0c;
   --card: #141513;
@@ -226,7 +225,7 @@ h1 {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 10px;
 }
 
 .job-card:hover {
